@@ -1,0 +1,1153 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1404\cocoasubrtf470
+{\fonttbl\f0\fmodern\fcharset0 CourierNewPSMT;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue255;\red0\green175\blue0;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww20440\viewh13000\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs20 \cf2 MODEL\cf0 :\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! Non-collab PULL: LIHD problem;\cf0 \
+\
+\cf3 !---------------------------------------------------------------------------------------;\cf0 \
+\pard\pardeftab720\partightenfactor0
+\cf2 SETS\cf0 :\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! Locations;\cf0 \
+BL/BL1..BL107/: DISTI;\
+SL/SL1..SL21/;\
+CL/CL1..CL13/;\
+\
+\cf3 ! Types;\cf0 \
+BT/BT1..BT19/: BIOGAS, HBP, DENS, MC, PS, COSTrest;\
+HT/HT1..HT2/: HV, HW, COSTH, HCAPmax, COSTHM, EH, EHM;\
+GT/GT1..GT2/: GCAPmax, GLOSS, COSTG, COSTGM, EG, EGM;\
+ST/ST1/:SLOSS, COSTSM, ESM, P_S;\
+CT/CT1..CT3/: CCAPinmin, CCAPinmax, MCmin, MCmax, PSmin, PSmax, COSTCM, ECM;\
+PT/PT1..PT3/: PLOSS, COSTP, COSTPM,PCAPMAX, EP, EPM;\
+OT/EL,TH/: PERCSURPL;\
+TT/TT1/:COSTtrans, COSTload, COSTunload, Etrans, Eload, Eunload;\
+ET/ET1..ET3/: MCX, BIOGASX, CAPX, COSTX, EX;\
+\
+\cf3 !Time periods;\cf0 \
+TP/TP1..TP5/: INTERVAL;\
+\
+\cf3 ! Biomass production site;\cf0 \
+BLTP(BL,TP): REV_B, COSTH_B, COSTHM_B, COSTG_B, COSTGM_B, COSTP_B, COSTPM_B, COSTS_B, COSTTR_B;\
+BTTP(BT,TP): P_B;\
+BLBT(BL,BT): AREA;\
+BLBTTP(BL,BT,TP): SUPmax, SUP, SH, SNH, HN, IN, HNoP;\
+BLBTHTTP(BL,BT,HT,TP): HXI, HOPEN;\
+BLBTGTTP(BL,BT,GT,TP): GXI, GOPEN;\
+BLBTPTTP(BL,BT,PT,TP): HNP, IB, PXI,IPOPEN;\
+BLHTBTTP(BL,HT,BT,TP): HNH;\
+BLPTBTTP(BL,PT,BT,TP): IPN;\
+BLBTSTTT(BL,BT,ST,TT);\
+BTSTCLCTTT(BT,ST,CL,CT,TT);\
+BTSLSTCTTT(BT,SL,ST,CT,TT);\
+\
+\cf3 !Transformation coefficients;\cf0 \
+BTBT(BT,BT): TQH,TQNH,HQ1, HQ2, PQ1, PQ2, PQ3, CQ1, CQ2, CQ3;\
+ETBT(ET,BT): CQX1, CQX2,CQX3;\
+\
+\cf3 ! Storage site;\cf0 \
+SLTP(SL,TP): REVS_S, REVB_S, COSTB_S, COSTS_S, COSTP_S, COSTTR_S;\
+SLST(SL,ST):SCAPmax;\
+SLSTTP(SL,ST,TP):SOPEN;\
+SLSTPTTP(SL,ST,PT,TP): SPOPEN;\
+SLSTPTBTTP(SL,ST,PT,BT,TP): SPN;\
+BTSLSTTP(BT,SL,ST,TP):Win,Wout,INVS;\
+BTSLSTPTTP(BT,SL,ST,PT,TP): PWin;\
+SLSTBTTP(SL,ST,BT,TP): SN;\
+BTSLSTTT(BT,SL,ST,TT);\
+\
+\cf3 !Conversion site;\cf0 \
+CLTP(CL,TP): REV_C, COSTB_C, COSTC_C, COSTP_C, COSTX_C;\
+CLCT(CL,CT);\
+CLCTTP(CL,CT,TP): COPEN, Vtot, CUtot;\
+CLCTPTTP(CL,CT,PT,TP): CPOPEN;\
+CLCTPTBTTP(CL,CT,PT,BT,TP): CPN;\
+BTCLCTTP(BT,CL,CT,TP):V,CU,INVC,noPV;\
+BTCLCTPTTP(BT,CL,CT,PT,TP): PV, CB, PXKC;\
+CLCTBTTP(CL,CT,BT,TP): REST, CN;\
+CTOT(CT,OT): CCAP, EFF;\
+CLCTOTTP(CL,CT,OT,TP): EC;\
+OTTP(OT,TP): DEMAND, ESURPLUS, P_OUT;\
+BTCT(BT,CT): Mmin, Mmax;\
+ETCT(ET,CT): MminX, MmaxX, LEC;\
+ETCLCTTP(ET,CL,CT,TP): CUX;\
+\
+\cf3 ! Association between products and operations and between operations;\cf0 \
+BINBTHT(BT,HT): LFH;\
+BINBTGT(BT,GT): LFG;\
+BINBTPT(BT,PT): LFP;\
+BINBTST(BT,ST): LFS;\
+BINBTCT(BT,CT): LFC;\
+BINSTPT(ST,PT): LSP;\
+BINCTPT(CT,PT): LCP;\
+\
+BTSTPT(BT,ST,PT);\
+BTCTPT(BT,CT,PT);\
+\
+\cf3 !Arcs;\cf0 \
+LINKXij(BL,BT,SL,ST,TT,TP):XIJ;\
+LINKXik(BL,BT,CL,CT,TT,TP):XIK;\
+LINKXjk(BT,SL,ST,CL,CT,TT,TP):XJK;\
+\
+LINKij(BL,SL): DISTIJ;\
+LINKik(BL,CL): DISTIK;\
+LINKjk(SL,CL): DISTJK;\
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 ENDSETS\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 !---------------------------------------------------------------------------------------;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 CALC\cf0 :\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! When transport is not possible (dist = 10000), so allocation = 0;\cf0 \
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (LINKXik(i,f,k,c,z,t)| DISTIK(i,k) #EQ# 10000 #AND# z #EQ# 1:\
+	XIK(i,f,k,c,z,t)=0);\
+\cf2 @FOR\cf0 (LINKXij(i,f,j,s,z,t)| DISTIJ(i,j) #EQ# 10000 #AND# z #EQ# 1:\
+	XIJ(i,f,j,s,z,t)=0);\
+\cf2 @FOR\cf0 (LINKXjk(f,j,s,k,c,z,t)| DISTJK(j,k) #EQ# 10000 #AND# z #EQ# 1:\
+	XJK(f,j,s,k,c,z,t)=0);\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 !Constraints defining the binary associations;\cf0 \
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BLBTHTTP(i,f,h,t)| LFH(f,h) #EQ# 0: \
+	HOPEN(i,f,h,t)=0);\
+\cf2 @FOR\cf0 (BLBTGTTP(i,f,g,t)| LFG(f,g) #EQ# 0: \
+	GOPEN(i,f,g,t)=0);\
+\cf2 @FOR\cf0 (BLBTPTTP(i,f,p,t)| LFP(f,p) #EQ# 0:\
+	IPOPEN(i,f,p,t)=0);\
+\cf2 @FOR\cf0 (SLSTPTTP(j,s,p,t)| LSP(s,p) #EQ# 0: \
+	SPOPEN(j,s,p,t)=0);\
+\cf2 @FOR\cf0 (CLCTPTTP(k,c,p,t)| LCP(c,p) #EQ# 0: \
+	CPOPEN(k,c,p,t)=0);\
+\
+\cf2 @FOR\cf0 (BLBTPTTP(i,f,p,t)| LFP(f,p) #EQ# 0:\
+	PXI(i,f,p,t)=0);\
+\cf2 @FOR\cf0 (BLBTPTTP(i,f,p,t)| LFP(f,p) #EQ# 0:\
+	HNP(i,f,p,t)=0);\
+\cf2 @FOR\cf0 (BLBTPTTP(i,f,p,t)| LFP(f,p) #EQ# 0:\
+	IB(i,f,p,t)=0);\
+\cf2 @FOR\cf0 (BLBTGTTP(i,f,g,t)| LFG(f,g) #EQ# 0: \
+	GXI(i,f,g,t)=0);\
+\cf2 @FOR\cf0 (BTSLSTTP(f,j,s,t)| LFS(f,s) #EQ# 0:\
+	Win(f,j,s,t)=0);\
+\cf2 @FOR\cf0 (BTSLSTPTTP(f,j,s,p,t)| LFP(f,p) #EQ# 0: \
+	PWin(f,j,s,p,t)=0);\
+\cf2 @FOR\cf0 (BTSLSTPTTP(f,j,s,p,t)| LSP(s,p) #EQ# 0: \
+	PWin(f,j,s,p,t)=0);\
+\cf2 @FOR\cf0 (BTSLSTPTTP(f,j,s,p,t)| LFS(f,s) #EQ# 0:\
+	PWin(f,j,s,p,t)=0);\
+\cf2 @FOR\cf0 (BTCLCTPTTP(f,k,c,p,t)| LFP(f,p) #EQ# 0: \
+	PXKC(f,k,c,p,t)=0);\
+\cf2 @FOR\cf0 (BTCLCTPTTP(f,k,c,p,t)| LCP(c,p) #EQ# 0: \
+	PXKC(f,k,c,p,t)=0);\
+\cf2 @FOR\cf0 (BTCLCTPTTP(f,k,c,p,t)| LCP(c,p) #EQ# 0: \
+	CB(f,k,c,p,t)=0);\
+\cf2 @FOR\cf0 (BTCLCTPTTP(f,k,c,p,t)| LFP(f,p) #EQ# 0: \
+	CB(f,k,c,p,t)=0);\
+\cf2 @FOR\cf0 (BTCLCTTP(f,k,c,t)| LFC(f,c) #EQ# 0: \
+	CU(f,k,c,t)=0);\
+\cf2 @FOR\cf0 (ETCLCTTP(e,k,c,t)| LEC(e,c) #EQ# 0:\
+	CUX(e,k,c,t)=0);\
+\
+\cf2 @FOR\cf0 (LINKXij(i,f,j,s,z,t)| LFS(f,s) #EQ# 0:\
+	Xij(i,f,j,s,z,t)=0);\
+\
+\cf2 @FOR\cf0 (SLSTTP(j,s,t) | SCAPmax(j,s)#EQ#0:\
+	SOPEN(j,s,t)=0);\
+\cf2 @FOR\cf0 (SLSTPTTP(j,s,p,t) | SCAPmax(j,s)#EQ#0:\
+	SPOPEN(j,s,p,t)=0);\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 !Predefinition of the supply chain (opening or closing storage and conversion facilities before running the optimisation);\cf0 \
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (CLCTTP(k,c,t) | k#EQ#1 #AND# c#EQ#3:\
+	COPEN(k,c,t)=1);\
+\cf2 @FOR\cf0 (CLCTTP(k,c,t) | k#EQ#1 #AND# c#NE#3:\
+	COPEN(k,c,t)=0);\
+\cf2 @FOR\cf0 (CLCTTP(k,c,t) | k#EQ#2 #AND# c#EQ#1:\
+	COPEN(k,c,t)=1);\
+\cf2 @FOR\cf0 (CLCTTP(k,c,t) | k#EQ#2 #AND# c#NE#1:\
+	COPEN(k,c,t)=0);\
+\cf2 @FOR\cf0 (CLCTTP(k,c,t) | k#EQ#3 #AND# c#EQ#1:\
+	COPEN(k,c,t)=1);\
+\cf2 @FOR\cf0 (CLCTTP(k,c,t) | k#EQ#3 #AND# c#NE#1:\
+	COPEN(k,c,t)=0);\
+\cf2 @FOR\cf0 (CLCTTP(k,c,t) | k#EQ#4 #AND# c#EQ#1:\
+	COPEN(k,c,t)=1);\
+\cf2 @FOR\cf0 (CLCTTP(k,c,t) | k#EQ#4 #AND# c#NE#1:\
+	COPEN(k,c,t)=0);\
+\cf2 @FOR\cf0 (CLCTTP(k,c,t) | k#EQ#5 #AND# c#EQ#1:\
+	COPEN(k,c,t)=1);\
+\cf2 @FOR\cf0 (CLCTTP(k,c,t) | k#EQ#5 #AND# c#NE#1:\
+	COPEN(k,c,t)=0);\
+\cf2 @FOR\cf0 (CLCTTP(k,c,t) | k#EQ#6 #AND# c#EQ#1:\
+	COPEN(k,c,t)=1);\
+\cf2 @FOR\cf0 (CLCTTP(k,c,t) | k#EQ#6 #AND# c#NE#1:\
+	COPEN(k,c,t)=0);\
+\cf2 @FOR\cf0 (CLCTTP(k,c,t) | k#EQ#7 #AND# c#EQ#2:\
+	COPEN(k,c,t)=1);\
+\cf2 @FOR\cf0 (CLCTTP(k,c,t) | k#EQ#7 #AND# c#NE#2:\
+	COPEN(k,c,t)=0);\
+\cf2 @FOR\cf0 (CLCTTP(k,c,t) | k#EQ#8 #AND# c#EQ#1:\
+	COPEN(k,c,t)=1);\
+\cf2 @FOR\cf0 (CLCTTP(k,c,t) | k#EQ#8 #AND# c#NE#1:\
+	COPEN(k,c,t)=0);\
+\cf2 @FOR\cf0 (CLCTTP(k,c,t) | k#EQ#9 #AND# c#EQ#1:\
+	COPEN(k,c,t)=1);\
+\cf2 @FOR\cf0 (CLCTTP(k,c,t) | k#EQ#9 #AND# c#NE#1:\
+	COPEN(k,c,t)=0);\
+\cf2 @FOR\cf0 (CLCTTP(k,c,t) | k#EQ#10 #AND# c#EQ#1:\
+	COPEN(k,c,t)=1);\
+\cf2 @FOR\cf0 (CLCTTP(k,c,t) | k#EQ#10 #AND# c#NE#1:\
+	COPEN(k,c,t)=0);\
+\cf2 @FOR\cf0 (CLCTTP(k,c,t) | k#EQ#11 #AND# c#EQ#2:\
+	COPEN(k,c,t)=1);\
+\cf2 @FOR\cf0 (CLCTTP(k,c,t) | k#EQ#11 #AND# c#NE#2:\
+	COPEN(k,c,t)=0);\
+\cf2 @FOR\cf0 (CLCTTP(k,c,t) | k#EQ#12 #AND# c#EQ#2:\
+	COPEN(k,c,t)=1);\
+\cf2 @FOR\cf0 (CLCTTP(k,c,t) | k#EQ#12 #AND# c#NE#2:\
+	COPEN(k,c,t)=0);\
+\cf2 @FOR\cf0 (CLCTTP(k,c,t) | k#EQ#13 #AND# c#EQ#2:\
+	COPEN(k,c,t)=1);\
+\cf2 @FOR\cf0 (CLCTTP(k,c,t) | k#EQ#13 #AND# c#NE#2:\
+	COPEN(k,c,t)=0);\
+\
+\cf2 ENDCALC\cf0 \
+\pard\pardeftab720\partightenfactor0
+\cf3 !-------------------------------------------------------------------------;\cf0 \
+\
+\cf3 ! OBJECTIVE FUNCTION\
+\
+! maximise energy output;\cf0 \
+\
+[energy] Etot = Ecout-EIK-EIJ-EJK-Eharv-Ecoll-Epretreat-Econv-Estorage-Eextra;\
+\
+Ecout=\
+	\cf2 @SUM\cf0 (CLCTOTTP(k,c,o,t): (3.6*EC(k,c,o,t)));\
+\
+EIK=\
+	\cf2 @SUM\cf0 (LINKXik(i,f,k,c,z,t):\
+		((DISTIK(i,k)*XIK(i,f,k,c,z,t)*Etrans(z)) + (XIK(i,f,k,c,z,t)*(Eload(z)+Eunload(z)))));\
+\
+EIJ=\
+	\cf2 @SUM\cf0 (LINKXij(i,f,j,s,z,t):\
+		((DISTIJ(i,j)*XIJ(i,f,j,s,z,t)*Etrans(z)) + (XIJ(i,f,j,s,z,t)*(Eload(z)+Eunload(z)))));\
+\
+EJK=\
+	\cf2 @SUM\cf0 (LINKXjk(f,j,s,k,c,z,t):\
+		((DISTJK(j,k)*XJK(f,j,s,k,c,z,t)*Etrans(z)) + (XJK(f,j,s,k,c,z,t)*(Eload(z)+Eunload(z)))));\
+\
+Eharv= \
+	\cf2 @SUM\cf0 (BLBTHTTP(i,f,h,t)| f#LE#18 :\
+		((10*EH(h)*HXI(i,f,h,t))/(HV(h)*HW(h)*HBP(f))))\
+	+\
+	\cf2 @SUM\cf0 (BLBTHTTP(i,f,h,t):\
+		(HOPEN(i,f,h,t)*2*DISTI(i)*EHM(h))) ;\
+\
+Ecoll=\
+	\cf2 @SUM\cf0 (BLBTGTTP(i,f,g,t):\
+		(GXI(i,f,g,t)*EG(g)))\
+	+\
+	\cf2 @SUM\cf0 (BLBTGTTP(i,f,g,t):\
+		(GOPEN(i,f,g,t)*2*DISTI(i)*EGM(g)));\
+\
+Epretreat=\
+	\cf2 @SUM\cf0 (BLBTPTTP(i,f,p,t):(PXI(i,f,p,t)*EP(p))) \
+	+\
+	\cf2 @SUM\cf0 (BTSLSTPTTP(f,j,s,p,t):(PWin(f,j,s,p,t)*EP(p))) \
+	+	\
+	\cf2 @SUM\cf0 (BTCLCTPTTP(f,k,c,p,t):(PXKC(f,k,c,p,t)*EP(p)));\
+\
+Estorage=\
+	\cf2 @SUM\cf0 (SLSTTP(j,s,t):(SOPEN(j,s,t)*SCAPmax(j,s)*INTERVAL(t)*ESM(s)*INTERVAL(t)));\
+\
+Econv = \
+	\cf2 @SUM\cf0 (CLCTTP(k,c,t):(COPEN(k,c,t)*ECM(c)*INTERVAL(t)));	\
+\
+Eextra=\
+	\cf2 @SUM\cf0 (ETCLCTTP(e,k,c,t):(CUX(e,k,c,t)*EX(e)));\
+\
+\cf3 ! cost;\cf0 \
+\
+[cost] \cf2 MAX\cf0  = REVtot - (COSTIK+COSTIJ+COSTJK+COSTharv+COSTcoll+COSTpretreat+COSTconv+COSTstorage+COSTextra);\
+\
+REVtot = \cf2 @SUM\cf0 (CLCTOTTP(k,c,o,t): EC(k,c,o,t)*P_OUT(o,t));\
+\
+COSTIK=\
+	\cf2 @SUM\cf0 (LINKXik(i,f,k,c,z,t):\
+		((DISTIK(i,k)*XIK(i,f,k,c,z,t)*COSTtrans(z)) + (XIK(i,f,k,c,z,t)*(COSTload(z)+COSTunload(z)))));\
+\
+COSTIJ=\
+	\cf2 @SUM\cf0 (LINKXij(i,f,j,s,z,t):\
+		((DISTIJ(i,j)*XIJ(i,f,j,s,z,t)*COSTtrans(z)) + (XIJ(i,f,j,s,z,t)*(COSTload(z)+COSTunload(z)))));\
+\
+COSTJK=\
+	\cf2 @SUM\cf0 (LINKXjk(f,j,s,k,c,z,t):\
+		((DISTJK(j,k)*XJK(f,j,s,k,c,z,t)*COSTtrans(z)) + (XJK(f,j,s,k,c,z,t)*(COSTload(z)+COSTunload(z)))));\
+\
+COSTharv= \
+	\cf2 @SUM\cf0 (BLBTHTTP(i,f,h,t):\
+		((COSTH(h)*HXI(i,f,h,t))))\
+	+\
+	\cf2 @SUM\cf0 (BLBTHTTP(i,f,h,t):\
+		(HOPEN(i,f,h,t)*2*DISTI(i)*COSTHM(h))) ;\
+\
+COSTcoll=\
+	\cf2 @SUM\cf0 (BLBTGTTP(i,f,g,t):\
+		(GXI(i,f,g,t)*COSTG(g)))\
+	+\
+	\cf2 @SUM\cf0 (BLBTGTTP(i,f,g,t):\
+		(GOPEN(i,f,g,t)*2*DISTI(i)*COSTGM(g)));\
+\
+COSTpretreat=\
+	\cf2 @SUM\cf0 (BLBTPTTP(i,f,p,t):(PXI(i,f,p,t)*COSTP(p))) \
+	+\
+	\cf2 @SUM\cf0 (BTSLSTPTTP(f,j,s,p,t):(PWin(f,j,s,p,t)*COSTP(p))) \
+	+	\
+	\cf2 @SUM\cf0 (BTCLCTPTTP(f,k,c,p,t):(PXKC(f,k,c,p,t)*COSTP(p)));\
+\
+COSTstorage=\
+	\cf2 @SUM\cf0 (SLSTTP(j,s,t):(SOPEN(j,s,t)*SCAPmax(j,s)*INTERVAL(t)*COSTSM(s)*INTERVAL(t)));\
+\
+COSTconv = \
+	\cf2 @SUM\cf0 (CLCTTP(k,c,t):(COPEN(k,c,t)*COSTCM(c)*INTERVAL(t)));	\
+\
+COSTextra=\
+	\cf2 @SUM\cf0 (ETCLCTTP(e,k,c,t):(CUX(e,k,c,t)*COSTX(e)));\
+\
+\cf3 !---------------------------------------------------------------------------------------;\cf0 \
+\
+\cf3 ! CALCULATION OF REVENUES AND COSTS\
+\
+! BIOMASS LOCATIONS;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BLTP(i,t):\
+	REV_B(i,t) = \cf2 @SUM\cf0 (BT(f):P_B(f,t) * SH(i,f,t)));\
+\
+\cf2 @FOR\cf0 (BLTP(i,t):\
+	COSTH_B(i,t) = \cf2 @SUM\cf0 (BINBTHT(f,h):COSTH(h)*HXI(i,f,h,t)));\
+\
+\cf2 @FOR\cf0 (BLTP(i,t):\
+	COSTHM_B(i,t) = \cf2 @SUM\cf0 (BINBTHT(f,h):HOPEN(i,f,h,t)*2*DISTI(i)*COSTHM(h)));\
+\
+\
+\cf2 @FOR\cf0 (BLTP(i,t):\
+	COSTG_B(i,t) = \cf2 @SUM\cf0 (BINBTGT(f,g):GXI(i,f,g,t)*COSTG(g)));\
+\
+\cf2 @FOR\cf0 (BLTP(i,t):\
+	COSTGM_B(i,t) = \cf2 @SUM\cf0 (BINBTGT(f,g):GOPEN(i,f,g,t)*2*DISTI(i)*COSTGM(g)));\
+\
+\
+\cf2 @FOR\cf0 (BLTP(i,t):\
+	COSTP_B(i,t) = \cf2 @SUM\cf0 (BINBTPT(f,p): PXI(i,f,p,t)*COSTP(p)));\
+\
+\cf2 @FOR\cf0 (BLTP(i,t):[B29]\
+	COSTS_B(i,t) = \cf2 @SUM\cf0 (BTSLSTTT(f,j,s,z): P_S(s)*XIJ(i,f,j,s,z,t) ));\
+\
+\cf2 @FOR\cf0 (BLTP(i,t):\
+	COSTTR_B(i,t) = \cf2 @SUM\cf0 (BT(f):\cf2 @SUM\cf0 (CLCT(k,c):\cf2 @SUM\cf0 (TT(z):((DISTIK(i,k)*XIK(i,f,k,c,z,t)*COSTtrans(z)) + (XIK(i,f,k,c,z,t)*(COSTload(z)+COSTunload(z)))))))\
+				+ \cf2 @SUM\cf0 (BT(f):\cf2 @SUM\cf0 (SLST(j,s):\cf2 @SUM\cf0 (TT(z):((DISTIJ(i,j)*XIJ(i,f,j,s,z,t)*COSTtrans(z)) + (XIJ(i,f,j,s,z,t)*(COSTload(z)+COSTunload(z))))))));\cf3 ! STORAGE LOCATIONS;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! STORAGE LOCATIONS;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (SLTP(j,t):[B30]\
+	REVS_S(j,t) = \cf2 @SUM\cf0 (BLBTSTTT(i,f,s,z): P_S(s)*XIJ(i,f,j,s,z,t)));\
+\
+\cf2 @FOR\cf0 (SLTP(j,t):[B36]\
+	REVB_S(j,t) = \cf2 @SUM\cf0 (BTSTCLCTTT(f,s,k,c,z): P_B(f,t)*XJK(f,j,s,k,c,z,t)));\
+\
+\cf2 @FOR\cf0 (SLTP(j,t):\
+	COSTB_S(j,t) = \cf2 @SUM\cf0 (BINBTST(f,s): P_B(f,t) * SOPEN(j,s,t)*SCAPmax(j,s)*INTERVAL(t)));\
+\
+\cf2 @FOR\cf0 (SLTP(j,t):\
+	COSTS_S(j,t) = \cf2 @SUM\cf0 (ST(s):SOPEN(j,s,t)*SCAPmax(j,s)*INTERVAL(t)*COSTSM(s)*INTERVAL(t)));\
+\
+\cf2 @FOR\cf0 (SLTP(j,t):\
+	COSTP_S(j,t) = \cf2 @SUM\cf0 (BTSTPT(f,s,p): PWin(f,j,s,p,t)*COSTP(p)));\
+\
+\cf2 @FOR\cf0 (SLTP(j,t):\
+	COSTTR_S(j,t) = \cf2 @SUM\cf0 (BT(f):\cf2 @SUM\cf0 (ST(s):\cf2 @SUM\cf0 (CLCT(k,c):\cf2 @SUM\cf0 (TT(z):((DISTJK(j,k)*XJK(f,j,s,k,c,z,t)*COSTtrans(z)) + (XJK(f,j,s,k,c,z,t)*(COSTload(z)+COSTunload(z)))))))));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! CONVERSION LOCATIONS;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (CLTP(k,t):\
+	REV_C(k,t) = \cf2 @SUM\cf0 (CTOT(c,o): EC(k,c,o,t)*P_OUT(o,t)));\
+\
+\cf2 @FOR\cf0 (CLTP(k,t):[B37]\
+	COSTB_C(k,t) = \cf2 @SUM\cf0 (BTSLSTCTTT(f,j,s,c,z): P_B(f,t)*XJK(f,j,s,k,c,z,t)));\
+\
+\cf2 @FOR\cf0 (CLTP(k,t):\
+	COSTC_C(k,t) = \cf2 @SUM\cf0 (CT(c):COPEN(k,c,t)*COSTCM(c)*INTERVAL(t)));\
+\
+\cf2 @FOR\cf0 (CLTP(k,t):\
+	COSTP_C(k,t) = \cf2 @SUM\cf0 (BTCTPT(f,c,p):PXKC(f,k,c,p,t)*COSTP(p)));\
+\
+\cf2 @FOR\cf0 (CLTP(k,t):\
+	COSTX_C(k,t) = \cf2 @SUM\cf0 (ETCT(e,c):(CUX(e,k,c,t)*COSTX(e))));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 !---------------------------------------------------------------------------------------;\cf0 \
+\
+\cf3 ! CONSTRAINTS AT THE BIOMASS PRODUCTION SITE;\cf0 \
+\
+\cf3 ! Define maximal possible supply in period 1 ;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BLBTTP(i,f,t)| t #EQ#2 : [B1]\
+	SUPmax(i,f,t)\
+	=\
+	AREA(i,f)*HBP(f));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! Possible maximum supply in each period t equals harvested and not harvested in previous period considering product changes;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BLBTTP(i,f,t)| t #EQ#1 : \
+	SUPmax(i,f,t) = 0);\
+\cf2 @FOR\cf0 (BLBTTP(i,f,t)| t #EQ#3 : \
+	SUPmax(i,f,t) = 0);\
+\cf2 @FOR\cf0 (BLBTTP(i,f,t)| t #EQ#5 : \
+	SUPmax(i,f,t) = 0);\
+\
+\cf2 @FOR\cf0 (BLBTTP(i,r,t)|t#EQ#4:[B2]\
+	SUPmax(i,r,t)\
+	=\
+	\cf2 @SUM\cf0 (BT(f):SH(i,f,t-2)*TQH(f,r))\
+	+\
+	\cf2 @SUM\cf0 (BT(f):SNH(i,f,t-2)*TQNH(f,r)));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 !Possible maximum supply in each period t equals the sum of the quantity of biomass harvested and not harvested in that site;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BLBTTP(i,f,t) : [B3]\
+	SUPmax(i,f,t)\
+	=\
+	SH(i,f,t)+SNH(i,f,t));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! Quantity of product harvested at location i at period t is the sum of all harvesting types;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BLBTTP(i,f,t):[B4]\
+	SH(i,f,t)\
+	=\
+	\cf2 @SUM\cf0 (HT(h):HXI(i,f,h,t)));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! The quantity of product type r harvested by harvesting type h at biomass production site at location i is determined by the quantity of product type f harvested  by harvesting type h at location i and conversion factor Q;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BLHTBTTP(i,h,r,t) | h#EQ#1 : [B5A]\
+	HNH(i,h,r,t)\
+	=\
+	\cf2 @SUM\cf0 (BT(f): HXI(i,f,h,t) * HQ1(f,r)));\
+\
+\cf2 @FOR\cf0 (BLHTBTTP(i,h,r,t) | h#EQ#2 : [B6B]\
+	HNH(i,h,r,t)\
+	=\
+	\cf2 @SUM\cf0 (BT(f): HXI(i,f,h,t) * HQ2(f,r)));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! The total quantity of product type f harvested at biomass production site at location i equals the sum of the quantity of product type f harvested by each harvesting type h;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BLBTTP(i,f,t): [B7]\
+	HN(i,f,t)\
+	=\
+	\cf2 @SUM\cf0 (HT(h): HNH(i,h,f,t)));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! The total quantity of product type f harvested at biomass production site at location i equals the sum of the quantity of product type f pre-treated by each pre-treatment type p at the biomass production site at location i;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BLBTTP(i,f,t): [B8]\
+	HN(i,f,t)\
+	=\
+	\cf2 @SUM\cf0 (PT(p): HNP(i,f,p,t))+HNoP(i,f,t));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! The quantity of product type f pre-treated by pre-treatment type p at biomass production site at location i is determined by the quantity of product type f harvested and pre-treated by pre-treatment type p and the quantity of product type f for subsequent pre-treatment by pre-treatment type p;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BLBTPTTP(i,f,p,t): [B9]\
+	PXI(i,f,p,t)\
+	=\
+	HNP(i,f,p,t)+IB(i,f,p,t));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! The quantity of product type r produced after pre-treatment type p at biomass production site at location i is determined by the amount of product type f pre-treated by pre-treatment type p at location i converted to product type f ($Q^\{fpr\}$) considering biomass loss during pre-treatment type p;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BLPTBTTP(i,p,r,t) | p #EQ# 1 : [B10A]\
+	IPN(i,p,r,t)\
+	=\
+	\cf2 @SUM\cf0 (BT(f): (PXI(i,f,p,t)*(1-PLOSS(p))*PQ1(f,r))));\
+\
+\cf2 @FOR\cf0 (BLPTBTTP(i,p,r,t) | p #EQ# 2 : [B10B]\
+	IPN(i,p,r,t)\
+	=\
+	\cf2 @SUM\cf0 (BT(f): (PXI(i,f,p,t)*(1-PLOSS(p))*PQ2(f,r))));\
+\
+\cf2 @FOR\cf0 (BLPTBTTP(i,p,r,t) | p #EQ# 3 : [B10C]\
+	IPN(i,p,r,t)\
+	=\
+	\cf2 @SUM\cf0 (BT(f): (PXI(i,f,p,t)*(1-PLOSS(p))*PQ3(f,r))));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! The total quantity of product type f produced after pre-treatment at biomass production site at location i equals the sum of the amount of product type f produced after each pre-treatment type p at biomass production site at location i;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BLBTTP(i,f,t): [B11]\
+	IN(i,f,t)\
+	=\
+	\cf2 @SUM\cf0 (PT(p):IPN(i,p,f,t))+HNoP(i,f,t));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! The total quantity of product type f produced after pre-treatment at biomass production site at location i equals the sum of the amount of product type f gathered at the biomass production site at location i and the amount of product type f available for subsequent pre-treatment at location i;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BLBTTP(i,f,t): [B12]\
+	IN(i,f,t)\
+	=\
+	\cf2 @SUM\cf0 (GT(g): GXI(i,f,g,t))\
+	+\
+	\cf2 @SUM\cf0 (PT(p): IB(i,f,p,t)));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! Product type f supplied from the biomass production site at location i is determined by the amount of product type f gathered at location i considering biomass loss assigned to collection type g;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BLBTTP(i,f,t): [B13]\
+	SUP(i,f,t)\
+	=\
+	\cf2 @SUM\cf0 (GT(g):(GXI(i,f,g,t)*(1-GLOSS(g)))));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! Product type f supplied from the biomass production site at location i may be routed to a storage facility of storage type s at location j or it may bypass the storage facility and ship directly to the conversion facility of conversion technology c at location k;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BLBTTP(i,f,t): [B14]\
+	SUP(i,f,t)\
+	=\
+	\cf2 @SUM\cf0 (SLST(j,s):\
+		\cf2 @SUM\cf0 (TT(z): XIJ(i,f,j,s,z,t)))\
+	+\
+	\cf2 @SUM\cf0 (CLCT(k,c):\
+		\cf2 @SUM\cf0 (TT(z): XIK(i,f,k,c,z,t))));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! CAPACITY;\cf0 \
+\
+\cf3 ! Product type f from biomass production site at location i can only be supplied if harvestig type h is applied to harvest product type f from location i;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BLBTHTTP(i,f,h,t): [B15]\
+	(HXI(i,f,h,t)/DENS(f))\
+	<=\
+	(HCAPmax(h)*INTERVAL(t)*HOPEN(i,f,h,t)));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! If a pre-treatment type p is applied to pre-treat product type p at biomass production site at location i, then IPOPEN = 1;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BLBTPTTP(i,f,p,t): [B16]\
+	PXI(i,f,p,t) \
+	<= \
+	IPOPEN(i,f,p,t)*PCAPmax(p)*INTERVAL(t));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! If a collection type g is applied to collect product type f at biomass production site at location i, then the quantity of product collected at the site must be equal to or smaller than the maximum capacity of collection type g;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BLBTGTTP(i,f,g,t): [B17]\
+	(GXI(i,f,g,t)/DENS(f))\
+	<=\
+	(GCAPmax(g)*INTERVAL(t)*GOPEN(i,f,g,t)));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 !INTEGER VARIABLES;\cf0 \
+\
+\cf3 ! Harvest type h can only be selected to harvest a product type f at biomass production site at location i if the binary association between product type f and harvest type h exists;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BLBTHTTP(i,f,h,t): [B18]\
+	LFH(f,h)*HOPEN(i,f,h,t)\
+	>=\
+	HOPEN(i,f,h,t));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! Pre-treatment type p can only be selected to pre-treat a product type f at biomass production site at location i if the binary association between product type f and pre-treatment type p exists;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BLBTPTTP(i,f,p,t): [B19]\
+	LFP(f,p)\
+	>=\
+	IPOPEN(i,f,p,t));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! Collection type g can only be selected to collect a product type f at biomass production site at location i if the binary association between product type f and collection type g exists;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BLBTGTTP(i,f,g,t): [B20]\
+	LFG(f,g)*GOPEN(i,f,g,t)\
+	>=\
+	GOPEN(i,f,g,t));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 !---------------------------------------------------------------------------------------;\cf0 \
+\
+\cf3 ! CONSTRAINTS AT THE STORAGE SITE;\cf0 \
+\
+\cf3 ! MASS BALANCE;\cf0 \
+\
+\cf3 ! The quantity of product type f stored in storage facility of storage type s at location j must be equal to the sum of product type f coming from any biomass production site i, any storage facility at location l with storage type u or any conversion facility at location k with conversion type c;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BTSLSTTP(f,j,s,t): [S1]\
+	Win(f,j,s,t)\
+	=\
+	\cf2 @SUM\cf0 (BL(i): \
+		\cf2 @SUM\cf0 (TT(z): XIJ(i,f,j,s,z,t))));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! Inventory at the storage facility in period 1;\cf0 \
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BTSLSTTP(f,j,s,t)|t#EQ#1: [S3]\
+	INVS(f,j,s,t)\
+	=\
+	INVS(f,j,s,5)+Win(f,j,s,t)-\cf2 @SUM\cf0 (PT(p):PWin(f,j,s,p,t))+SN(j,s,f,t)-(Wout(f,j,s,t))/(1-SLOSS(s)));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 !Inventory at the storage facility following periods;\cf0 \
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BTSLSTTP(f,j,s,t)|t#GT#1: [S4]\
+	INVS(f,j,s,t)\
+	=\
+	INVS(f,j,s,t-1)+Win(f,j,s,t)-\cf2 @SUM\cf0 (PT(p):PWin(f,j,s,p,t))-(Wout(f,j,s,t))/(1-SLOSS(s))+SN(j,s,f,t));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 !When biomass is stored between periods, it must be converted to silage;\cf0 \
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BTSLSTTP(f,j,s,t)|f#LE#9:\
+	INVS(f,j,s,t)=0);\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! The quantity of product type r produced after pre-treatment type p at a storage facility with storage type s at location j is determined by the amount of product type f delivered at storage facility with storage type s and pre-treatment type p at location j converted to product type r ($Q^\{fpr\}$) considering product loss during pre-treatment type p;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (SLSTPTBTTP(j,s,p,r,t) | p #EQ# 1 : [S5A]\
+	SPN(j,s,p,r,t)\
+	=\
+	\cf2 @SUM\cf0 (BT(f): (PWin(f,j,s,p,t)*(1-PLOSS(p))*PQ1(f,r))));\
+\
+\cf2 @FOR\cf0 (SLSTPTBTTP(j,s,p,r,t) | p #EQ# 2 : [S5B]\
+	SPN(j,s,p,r,t)\
+	=\
+	\cf2 @SUM\cf0 (BT(f): (PWin(f,j,s,p,t)*(1-PLOSS(p))*PQ2(f,r))));\
+\
+\cf2 @FOR\cf0 (SLSTPTBTTP(j,s,p,r,t) | p #EQ# 3: [S5C]\
+	SPN(j,s,p,r,t)\
+	=\
+	\cf2 @SUM\cf0 (BT(f): (PWin(f,j,s,p,t)*(1-PLOSS(p))*PQ3(f,r))));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! The total quantity of product f produced after pre-treatment at storage facility with storage type s at location j equals the sum of the quantity of product type f produced after each pre-treatment type p at storage facility with storage type s at location j;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (SLSTBTTP(j,s,f,t): [S6]\
+	SN(j,s,f,t)\
+	=\
+	\cf2 @SUM\cf0 (PT(p): SPN(j,s,p,f,t)));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! The quantity of product type f routed from a storage facility of storage type s at location j must be equal to the sum of the material shipped from the storage facility to any conversion facility at location k or any storage facility at location l with storage type u;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BTSLSTTP(f,j,s,t): [S7]\
+	Wout(f,j,s,t)\
+	=\
+	\cf2 @SUM\cf0 (CLCT(k,c): \
+		\cf2 @SUM\cf0 (TT(z): XJK(f,j,s,k,c,z,t))));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! CAPACITY;\cf0 \
+\
+\cf3 ! If a storage facility of storage type s is built at location j, then the designed storage capacity must be equal to or smaller than its maximum capacity for that storage type;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (SLSTTP(j,s,t): [S8]\
+	(\cf2 @SUM\cf0 (BT(f):(Win(f,j,s,t)/DENS(f))))\
+	<=\
+	(SCAPmax(j,s)*INTERVAL(t)*SOPEN(j,s,t)));\
+\
+\cf2 @FOR\cf0 (SLSTTP(j,s,t): \
+	(\cf2 @SUM\cf0 (BT(f):(INVS(f,j,s,t)/DENS(f))))\
+	<=\
+	(SCAPmax(j,s)*INTERVAL(t)*SOPEN(j,s,t)));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! INTEGER VARIABLES;\cf0 \
+\
+\cf3 ! A pre-treatment type p at a storage facility with storage type s at location j is open if the storage facility with storage type s at location j is opened and Lsp = 1;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (SLSTPTTP(j,s,p,t): [S9]\
+	SOPEN(j,s,t)*LSP(s,p)\
+	=\
+	SPOPEN(j,s,p,t));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! A product type f can only be delivered to storage facility with storage type s if the binary association between product type f and storage type s exists;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BTSLSTTP(f,j,s,t): [S10]\
+	LFS(f,s)*SCAPMAX(j,s)*INTERVAL(t) \
+	>= \
+	(Win(f,j,s,t)/DENS(f)));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! A product type f can only be pre-treated by pre-treatment type p if the binary associations product type f - pre-treatment type p and storage type s - pre-treatment type p exist;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BTSLSTPTTP(f,j,s,p,t): [S11]\
+	LSP(s,p)*LFP(f,p)*SCAPMAX(j,s)*INTERVAL(t) \
+	>= \
+	(PWin(f,j,s,p,t)/DENS(f)));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 !@FOR(SLSTTP(j,s,t) | t #GT# 1: [S12]\
+	SOPEN(j,s,t)\
+	>=\
+	SOPEN(j,s,t-1));\cf0 \
+\
+\cf3 !---------------------------------------------------------------------------------------;\cf0 \
+\
+\cf3 ! CONSTRAINTS AT THE CONVERSION SITE;\cf0 \
+\
+\cf3 ! The input of biomass of type f at the conversion facility with conversion technology c at location k is the sum of the biomass of type f coming from any biomass production site at location i, from any storage facility of type s at location j, any conversion facility of type b at location m;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BTCLCTTP(f,k,c,t): [C1]\
+	V(f,k,c,t)\
+	=\
+	\cf2 @SUM\cf0 (BL(i): \
+		\cf2 @SUM\cf0 (TT(z): XIK(i,f,k,c,z,t)))\
+	+\
+	\cf2 @SUM\cf0 (SLST(j,s): \
+		\cf2 @SUM\cf0 (TT(z): XJK(f,j,s,k,c,z,t))));\
+\
+\cf2 @FOR\cf0 (BTCLCTTP(f,k,c,t): [C2]\
+	V(f,k,c,t)\
+	=\
+	\cf2 @SUM\cf0 (PT(p): PV(f,k,c,p,t))+noPV(f,k,c,t));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! Linkage between periods;\cf0 \
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BTCLCTTP(f,k,c,t)|t#EQ#1: [C3]\
+	INVC(f,k,c,t)\
+	=\
+	INVC(f,k,c,5)+V(f,k,c,t)-\cf2 @SUM\cf0 (PT(p):PV(f,k,c,p,t))+\cf2 @SUM\cf0 (PT(p):CPN(k,c,p,f,t))-CU(f,k,c,t));\
+\
+\cf2 @FOR\cf0 (BTCLCTTP(f,k,c,t)|t#GT#1: [C4]\
+	INVC(f,k,c,t)\
+	=\
+	INVC(f,k,c,t-1)+V(f,k,c,t)-\cf2 @SUM\cf0 (PT(p):PV(f,k,c,p,t))-CU(f,k,c,t)+\cf2 @SUM\cf0 (PT(p): CPN(k,c,p,f,t)));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 !When biomass is stored between periods, it must be converted to silage;\cf0 \
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BTCLCTTP(f,k,c,t)|f#LE#9:\
+	INVC(f,k,c,t)=0);\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! The quantity of product type f pre-treated by pre-treatment type p at the conversion facility of type c at location k is determined by the quantity of product type f transported to the conversion facility and pre-treated by pre-treatment type p and the quantity of product type f for subsequent pre-treatment by pre-treatment type p;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BTCLCTPTTP(f,k,c,p,t): [C5]\
+	PXKC(f,k,c,p,t)\
+	=\
+	PV(f,k,c,p,t)+CB(f,k,c,p,t));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! The quantity of product type r produced after pre-treatment type p at a conversion facility with conversion type c at location k is determined by the amount of product type f delivered at the conversion facility with conversion type c and pre-treatment type p at location k converted to product type r considering product loss during pre-treatment type p;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (CLCTPTBTTP(k,c,p,r,t) | p #EQ# 1 : [C6A]\
+	CPN(k,c,p,r,t)\
+	=\
+	\cf2 @SUM\cf0 (BT(f): (PXKC(f,k,c,p,t)*(1-PLOSS(p))*PQ1(f,r))));\
+\
+\cf2 @FOR\cf0 (CLCTPTBTTP(k,c,p,r,t) | p #EQ# 2 : [C6B]\
+	CPN(k,c,p,r,t)\
+	=\
+	\cf2 @SUM\cf0 (BT(f): (PXKC(f,k,c,p,t)*(1-PLOSS(p))*PQ2(f,r))));\
+\
+\cf2 @FOR\cf0 (CLCTPTBTTP(k,c,p,r,t) | p #EQ# 3 : [C6C]\
+	CPN(k,c,p,r,t)\
+	=\
+	\cf2 @SUM\cf0 (BT(f): (PXKC(f,k,c,p,t)*(1-PLOSS(p))*PQ3(f,r))));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! The total quantity of product f produced after pre-treatment at conversion facility with conversion type c at location k equals the sum of the amount of product type f produced after each pre-treatment type p at conversion facility with conversion type c at location k;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (CLCTBTTP(k,c,f,t): [C7]\
+	CN(k,c,f,t)\
+	=\
+	\cf2 @SUM\cf0 (PT(p):CPN(k,c,p,f,t))+noPV(f,k,c,t));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! The total quantity of product f produced after pre-treatment at conversion facility with conversion type c at location k equals the sum of the quantity of product type f used in the conversion process of the conversion facility with conversion type c at location k and the quantity of product type f used for subsequent pre-treatment at conversion facility with conversion type c at location k;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (CLCTBTTP(k,c,f,t): [C8]\
+	CN(k,c,f,t)\
+	=\
+	CU(f,k,c,t)\
+	+\
+	\cf2 @SUM\cf0 (PT(p):CB(f,k,c,p,t)));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! The quantity of (rest) product type r is determined by the amount of biomass delivered at the conversion facility of type c at location k and a conversion factor defining the fraction of product type f converted to product of type r after conversion of type c;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (CLCTBTTP(k,c,r,t)| c #EQ# 1 :   [C9A]\
+	REST(k,c,r,t)\
+	=\
+	(\cf2 @SUM\cf0 (BT(f):(CU(f,k,c,t)*CQ1(f,r))))\
+	+\
+	(\cf2 @SUM\cf0 (ET(e):(CUX(e,k,c,t)*CQX1(e,r)))));\
+\
+\cf2 @FOR\cf0 (CLCTBTTP(k,c,r,t) | c #EQ# 2 :  [C9B]\
+	REST(k,c,r,t)\
+	=\
+	(\cf2 @SUM\cf0 (BT(f): (CU(f,k,c,t)*CQ2(f,r))))\
+	+\
+	(\cf2 @SUM\cf0 (ET(e):(CUX(e,k,c,t)*CQX2(e,r)))));\
+\
+\cf2 @FOR\cf0 (CLCTBTTP(k,c,r,t) | c #EQ# 3 :  [C9C]\
+	REST(k,c,r,t)\
+	=\
+	(\cf2 @SUM\cf0 (BT(f): (CU(f,k,c,t)*CQ3(f,r))))\
+	+\
+	(\cf2 @SUM\cf0 (ET(e):(CUX(e,k,c,t)*CQX3(e,r)))));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! The quantity of (rest) product type f available after conversion of type c at a conversion facility at location k is equal to the quantity of (rest) product type f transported to a storage facility of type s at location j, to another conversion facility of type b at location m, and the quantity of (rest) product leaving the supply chain;\cf0 \
+\
+\cf3 !@FOR(CLCTBTTP(k,c,f,t): [C10]\
+	REST(k,c,f,t)\
+	=\
+	@SUM(CLCT(m,b): \
+		@SUM(TT(z): XKM(f,k,c,m,b,z,t)))\
+	+\
+	@SUM(SLST(j,s): \
+		@SUM(TT(z): XKJ(f,k,c,j,s,z,t)))\
+	+\
+	RESTout(k,c,f,t));\cf0 \
+\
+\cf3 ! CAPACITY;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (CLCTTP(k,c,t): [C11]\
+	Vtot(k,c,t)\
+	=\
+	\cf2 @SUM\cf0 (BT(f): V(f,k,c,t)));\
+\
+\cf2 @FOR\cf0 (CLCTTP(k,c,t): [C12]\
+	CUtot(k,c,t)\
+	=\
+	(\cf2 @SUM\cf0 (BT(f): CU(f,k,c,t)))\
+	+\
+	(\cf2 @SUM\cf0 (ET(e): CUX(e,k,c,t))));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! If a conversion facility of conversion technology c is built at location k then the feedstock inputs to that conversion facility must be equal to or larger than its minimum input capacity;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (CLCTTP(k,c,t): [C13]\
+	CUtot(k,c,t)\
+	>=\
+	CCAPinmin(c)*INTERVAL(t)*COPEN(k,c,t));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! If a conversion facility of conversion technology c is built at location k then the feedstock inputs to that conversion facility must be equal to or smaller than its maximum input capacity;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (CLCTTP(k,c,t): [C14]\
+	CUtot(k,c,t)\
+	<=\
+	CCAPinmax(c)*INTERVAL(t)*COPEN(k,c,t));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! The total quantity of extra product of type e converted in the conversion facilities must be smaller than the available quantity of product e;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (ET(e): [C15]\
+	\cf2 @SUM\cf0 (CLCTTP(k,c,t): CUX(e,k,c,t))\
+	<=\
+	CAPX(e));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! The quantity of bioenergy of type o produced at a conversion facility of conversion technology c at location k is equal to the quantity of bioenergy of type o that can be produced from the biomass entering the conversion facility given the efficiency of that conversion technology;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (CLCTOTTP(k,c,o,t): [C16]\
+	EC(k,c,o,t)\
+	=\
+	(\cf2 @SUM\cf0 (BT(f): (CU(f,k,c,t)*EFF(c,o)*0.006*BIOGAS(f))))\
+	+\
+	(\cf2 @SUM\cf0 (ET(e): (CUX(e,k,c,t)*EFF(c,o)*0.006*BIOGASX(e)))));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! The designed capacity of a conversion facility with conversion technology c at location k in terms of bioenergy output of type o must be larger than or equal to the quantity of bioenergy of type o produced at a conversion facility of conversion technology c at location k;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (CLCTOTTP(k,c,o,t): [C17]\
+	EC(k,c,o,t)\
+	<=\
+	CCAP(c,o)*INTERVAL(t)*COPEN(k,c,t));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! INTEGER VARIABLES;\cf0 \
+\
+\cf3 ! A pre-treatment type p is open at a conversion facility with conversion type c at location k if the conversion facility with conversion type c at location k is opened and Lcp = 1;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (CLCTPTTP(k,c,p,t): [C18]\
+	COPEN(k,c,t)*LCP(c,p)\
+	=\
+	CPOPEN(k,c,p,t));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! A conversion facility with conversion type c at location k can only be selected to convert product type f if the binary association between product type f and conversion type c exists;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BTCLCTTP(f,k,c,t): [C19]\
+	CU(f,k,c,t) \
+	<= \
+	LFC(f,c)*INTERVAL(t)*CCAPinmax(c));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! A conversion facility with conversion type c at location k can only be selected to convert extra product type e if the binary association between product type f and conversion type c exists;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (ETCLCTTP(e,k,c,t): [C20]\
+	CUX(e,k,c,t) \
+	<= \
+	LEC(e,c)*INTERVAL(t)*CCAPinmax(c));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! A pre-treatment type p can only be selected to pre-treat product type f at a conversion facility of type c at location k if the binary associations product type f - pre-treatment type p and conversion type c - pre-treatment type p exist;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BTCLCTPTTP(f,k,c,p,t): [C21]\
+	PXKC(f,k,c,p,t) \
+	<= \
+	LCP(c,p)*LFP(f,p)*INTERVAL(t)*CCAPinmax(c));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 !@FOR(CLCTTP(k,c,t) | t #GT# 1:\
+	COPEN(k,c,t)\
+	>=\
+	COPEN(k,c,t-1));\cf0 \
+\
+\cf3 ! PRODUCT REQUIREMENTS;\cf0 \
+\
+\cf3 ! Minimum proportion of biomass of type f required in the conversion process of type c at the conversion facility at location k;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BTCLCTTP(f,k,c,t): [C23]\
+	CU(f,k,c,t)\
+	>=\
+	(Mmin(f,c)*CUtot(k,c,t)));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! Minimum proportion of extra product of type e required in the conversion process of type c at the conversion facility at location k;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (ETCLCTTP(e,k,c,t): [C24]\
+	CUX(e,k,c,t)\
+	>=\
+	(MminX(e,c)*CUtot(k,c,t)));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! Maximum proportion of biomass of type f allowed in the conversion process of type c at the conversion facility at location k;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BTCLCTTP(f,k,c,t): [C25]\
+	CU(f,k,c,t)\
+	<=\
+	(Mmax(f,c)*CUtot(k,c,t)));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! Maximum proportion of extra product of type e required in the conversion process of type c at the conversion facility at location k;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (ETCLCTTP(e,k,c,t): [C26]\
+	CUX(e,k,c,t)\
+	<=\
+	(MmaxX(e,c)*CUtot(k,c,t)));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! Maximum proportion of extra product allowed to be used for conversion in the complete supply chain;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (CLCTTP(k,c,t): [C27]\
+	(\cf2 @SUM\cf0 (ET(e):CUX(e,k,c,t)))\
+	<=\
+	Mtot*CUtot(k,c,t));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! Minimum moisture content of the mixture processed during the conversion process of type c at the conversion facility at location k;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (CLCTTP(k,c,t): [C28]\
+	((\cf2 @SUM\cf0 (BT(f):(CU(f,k,c,t)*MC(f))))\
+	+\
+	(\cf2 @SUM\cf0 (ET(e):(CUX(e,k,c,t)*MCX(e)))))\
+	>=\
+	MCmin(c)*CUtot(k,c,t));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! Maximum moisture content of the mixture processed during the conversion process of type c at the conversion facility at location k;\cf0 \
+ \
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (CLCTTP(k,c,t): [C29]\
+	((\cf2 @SUM\cf0 (BT(f):(CU(f,k,c,t)*MC(f))))\
+	+\
+	(\cf2 @SUM\cf0 (ET(e):(CUX(e,k,c,t)*MCX(e)))))\
+	<=\
+	MCmax(c)*CUtot(k,c,t));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! Minimum particle size of the product types processed during the conversion process of type c at the conversion facility at location k;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BTCLCTTP(f,k,c,t): [C30]\
+	(CU(f,k,c,t)*PS(f))\
+	>=\
+	(PSmin(c)*CU(f,k,c,t)));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! Maximum  particle size of the product types processed during the conversion process of type c at the conversion facility at location k;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BTCLCTTP(f,k,c,t): [C31]\
+	(CU(f,k,c,t)*PS(f))\
+	<=\
+	(PSmax(c)*CU(f,k,c,t)));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 !---------------------------------------------------------------------------------------;\cf0 \
+\
+\cf3 ! TRANSPORT CONSTRAINTS;\cf0 \
+\
+\cf3 ! Transport of biomass of type f between the biomass production site at location i and storage facility of storage type s at location j can exist only if the storage facility of storage type s at location j also exists;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (LINKXij(i,f,j,s,z,t): [T1]\
+	XIJ(i,f,j,s,z,t)\
+	<=\
+	(INTERVAL(t)*SCAPmax(j,s)*DENS(f)*SOPEN(j,s,t)));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! Transported of biomass of type f between the biomass production site at location i and conversion facility of conversion type c at location k can exist only if the conversion facility of conversion type c at location k also exists;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (LINKXik(i,f,k,c,z,t): [T2] \
+	XIK(i,f,k,c,z,t)\
+	<=\
+	(INTERVAL(t)*CCAPinmax(c)*COPEN(k,c,t)));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! Transport of biomass of type f between the storage facility of storage type s at location j and the conversion facility of conversion type c at location k can exist only if the storage facility of storage type s at location j and the conversion facility of conversion type c at location k also exist;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (LINKXjk(f,j,s,k,c,z,t): [T3]\
+	XJK(f,j,s,k,c,z,t) \
+	<= \
+	(INTERVAL(t)*SCAPmax(j,s)*DENS(f)*SOPEN(j,s,t)));\
+\
+\cf2 @FOR\cf0 (LINKXjk(f,j,s,k,c,z,t): [T4]\
+	XJK(f,j,s,k,c,z,t) \
+	<= \
+	(INTERVAL(t)*CCAPinmax(c)*COPEN(k,c,t)));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 !---------------------------------------------------------------------------------------;\cf0 \
+\
+\cf3 ! DEMAND CONSTRAINTS;\cf0 \
+\
+\cf3 ! The quantity of bioenergy of type o produced at the conversion facilities must be larger or equal to the bioenergy demand;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (OTTP(o,t): [D1]\
+	ESURPLUS(o,t) \
+	= \
+	((\cf2 @SUM\cf0 (CLCT(k,c):EC(k,c,o,t)))-DEMAND(o,t)));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 ! The quantity of bioenergy of type o produced on top of the bioenergy demand must be smaller than a certain percentage of the bioenergy demand;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (OTTP(o,t): [D2]\
+	ESURPLUS(o,t)\
+	<= \
+	PERCSURPL(o)*DEMAND(o,t));\
+\
+\pard\pardeftab720\partightenfactor0
+\cf3 !--------------------------------------------------------------------------------;\cf0 \
+\
+\cf3 ! INTEGER VARIABLES;\cf0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 @FOR\cf0 (BLBTHTTP(i,f,h,t): [GIN1]\
+	\cf2 @GIN\cf0 (HOPEN(i,f,h,t)));\
+\cf2 @FOR\cf0 (BLBTGTTP(i,f,g,t): [GIN2]\
+	\cf2 @GIN\cf0 (GOPEN(i,f,g,t)));\
+\
+\cf2 @FOR\cf0 (BLBTPTTP(i,f,p,t): [BIN1]\
+	\cf2 @BIN\cf0 (IPOPEN(i,f,p,t)));\
+\cf2 @FOR\cf0 (SLSTTP(j,s,t): [BIN2]\
+	\cf2 @BIN\cf0 (SOPEN(j,s,t)));\
+\cf2 @FOR\cf0 (CLCTTP(k,c,t): [BIN3]\
+	\cf2 @BIN\cf0 (COPEN(k,c,t)));\
+\cf2 @FOR\cf0 (SLSTPTTP(j,s,p,t): [BIN4]\
+	\cf2 @BIN\cf0 (SPOPEN(j,s,p,t)));\
+\cf2 @FOR\cf0 (CLCTPTTP(k,c,p,t): [BIN5]\
+	\cf2 @BIN\cf0 (CPOPEN(k,c,p,t)));\
+\
+\cf2 END\cf0 \
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+}
